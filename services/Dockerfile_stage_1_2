@@ -1,0 +1,29 @@
+# /home/mle-user/mle_projects/mle-project-sprint3-v001/services/Dockerfile_stage_1_2
+
+# ---------- BASE IMAGE ---------- #
+FROM python:3.10-slim
+
+# ---------- METADATA ---------- #
+LABEL maintainer='IuliiaK'
+LABEL description='FastAPI microservice for real estate price prediction with CatBoost'
+
+# ---------- ENVIRONMENT ---------- #
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# ---------- WORKDIR ---------- #
+WORKDIR /app
+
+# ---------- COPY FILES ---------- #
+COPY requirements.txt /app/requirements.txt
+COPY services/ml_service /app/ml_service
+COPY services/models /app/models
+
+# ---------- INSTALL DEPENDENCIES ---------- #
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# ---------- EXPOSE PORT ---------- #
+EXPOSE 8080
+
+# ---------- RUN FASTAPI ---------- #
+CMD ["uvicorn", "ml_service.main_stage_1_2:app", "--host", "0.0.0.0", "--port", "8080"]

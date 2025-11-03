@@ -1,0 +1,45 @@
+# mle_projects/mle-project-sprint3-v001/services/docker-compose.yaml
+
+services:
+  main-app:
+    container_name: sprint_3_stage_3_4_microservice_container
+    build:
+      context: ..
+      dockerfile: services/Dockerfile_stage_3_4
+    env_file:
+      - .env
+    ports:
+      - '${MAIN_APP_VM_PORT}:${MAIN_APP_DOCKER_PORT}'
+    volumes:
+      - ./models:/app/models
+    hostname: fastapi
+    restart: always
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - '${PROMETEUS_APP_VM_PORT}:${PROMETEUS_APP_DOCKER_PORT}'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - main-app
+    restart: always
+    hostname: prometheus
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    env_file:
+      - .env
+    ports:
+      - '${GRAFANA_APP_VM_PORT}:${GRAFANA_APP_DOCKER_PORT}'
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}
+    depends_on:
+      - prometheus
+    restart: always
+    hostname: grafana

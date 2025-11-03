@@ -1,0 +1,37 @@
+Create virtual environment
+- install extension
+sudo apt-get install python3.10-venv
+- create .venv
+python3 -m venv .venv
+- run .venv
+source .venv/bin/activate 
+- install packages
+pip install -r requirements.txt
+
+Make the .venv to run automatically after this and only this project has been opened
+- create .vscode folder 
+mkdir -p .vscode
+- create settings.json
+nano .vscode/settings.json
+- add this script into the settings.json
+{
+    "python.pythonPath": ".venv/bin/python"
+}
+
+Virtual environment .venv should run automatically after the project has been opened,
+- to check this use the following terminal command, the result of the command should point to the .venv folder
+which python
+- in order to run .venv manually use
+source .venv/bin/activate
+- in order to deactivate .venv use
+deactivate
+
+Install packages 
+pip install -r requirements.txt
+
+Check the list of installed packages
+pip list
+
+Delete virtual environment:
+deactivate
+rm -rf .venv

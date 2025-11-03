@@ -1,0 +1,10 @@
+global:
+  # Metrics collection frequency 
+  scrape_interval: 5s
+
+scrape_configs:
+  # Scrape metrics from FastAPI ML service
+  - job_name: "fastapi-ml-service"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["fastapi:8080"]
